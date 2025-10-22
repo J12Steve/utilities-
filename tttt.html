@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Web Tools 🌌 — Giao diện Liquid Glass</title>
+  <style>
+    :root{
+      --radius-chinh:18px;
+      --glass-bg:rgba(255,255,255,0.12);
+      --glass-border:rgba(255,255,255,0.18);
+      --text-chu:#f7f8fb;
+      --muted:rgba(247,248,251,0.7);
+      --accent-1:#372654;
+      --accent-2:#1e3a8a;
+      --accent-3:#7b61ff;
+      --shadow:0 8px 30px rgba(2,6,23,0.6);
+      --nav-height:72px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      color:var(--text-chu);
+      font-family:Inter,system-ui,Arial;
+      background:linear-gradient(120deg,var(--accent-2),var(--accent-1),var(--accent-3));
+      background-size:300% 300%;
+      animation:bgmove 15s ease infinite;
+    }
+    @keyframes bgmove{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+
+    /* Navbar */
+    .thanhDieuHuong{
+      position:fixed;
+      top:12px;
+      left:50%;
+      transform:translateX(-50%);
+      width:calc(100% - 32px);
+      max-width:1200px;
+      height:var(--nav-height);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 18px;
+      border-radius:var(--radius-chinh);
+      background:rgba(255,255,255,0.1);
+      backdrop-filter:blur(10px);
+      border:1px solid var(--glass-border);
+      box-shadow:var(--shadow);
+      z-index:50;
+    }
+    .logo{display:flex;align-items:center;gap:10px;font-weight:700;}
+    .logo .icon{font-size:20px;}
+    .menuChinh{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .menuChinh a{
+      padding:8px 14px;
+      border-radius:12px;
+      text-decoration:none;
+      color:var(--muted);
+      font-weight:600;
+      font-size:14px;
+      transition:all .2s ease;
+    }
+    .menuChinh a:hover{color:#fff}
+    .menuChinh a.active{
+      background:rgba(255,255,255,0.15);
+      border:1px solid rgba(255,255,255,0.2);
+      color:#fff;
+    }
+    .nutHamburger{
+      display:none;
+      width:44px;height:44px;
+      border-radius:12px;
+      background:var(--glass-bg);
+      border:1px solid var(--glass-border);
+      backdrop-filter:blur(10px);
+      align-items:center;justify-content:center;
+      cursor:pointer;
+    }
+
+    /* Layout */
+    .layout{
+      max-width:1200px;
+      margin:0 auto;
+      padding:calc(var(--nav-height) + 36px) 18px 56px;
+    }
+
+    /* Nội dung chính */
+    .theCardLon{
+      padding:22px;
+      border-radius:18px;
+      background:rgba(255,255,255,0.1);
+      backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,0.2);
+      box-shadow:var(--shadow);
+      margin-bottom:24px;
+      animation:fadeIn .4s ease;
+    }
+    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .tieuDeNoiDung{font-size:20px;font-weight:800;margin-bottom:8px}
+    .moTaNho{color:var(--muted);font-size:14px;margin-bottom:12px}
+    .congCuNho{
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.15);
+      margin-top:12px;
+    }
+
+    /* Sidebar (chỉ mobile) */
+    .menuBen{
+      position:fixed;
+      top:0;left:0;bottom:0;
+      width:280px;max-width:85%;
+      background:rgba(255,255,255,0.1);
+      backdrop-filter:blur(12px);
+      border-right:1px solid rgba(255,255,255,0.2);
+      padding-top:100px;
+      padding-left:16px;padding-right:16px;
+      transform:translateX(-120%);
+      transition:transform .3s ease;
+      z-index:100;
+      display:flex;
+      flex-direction:column;
+    }
+    .menuBen.moiHienThi{transform:translateX(0)}
+    .menuBen a{
+      display:block;
+      padding:10px 14px;
+      border-radius:10px;
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+    .menuBen a.active{
+      background:rgba(255,255,255,0.15);
+      color:#fff;
+    }
+    .overlayMenu{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.5);
+      z-index:90;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .2s ease;
+    }
+    .overlayMenu.hien{opacity:1;pointer-events:auto}
+
+    @media(max-width:900px){
+      .menuChinh{display:none}
+      .nutHamburger{display:flex}
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="thanhDieuHuong">
+    <div class="logo"><div class="icon">🌌</div> <div>Web Tools</div></div>
+    <nav class="menuChinh">
+      <a href="#" class="active" data-trang="trangChu">Trang chủ</a>
+      <a href="#" data-trang="taoQR">Tạo Mã QR Đa Năng</a>
+      <a href="#" data-trang="rutGon">Rút Gọn Link Nhanh</a>
+      <a href="#" data-trang="chuyenDoi">Chuyển Đổi File</a>
+    </nav>
+    <div class="nutHamburger" id="nutHamburger">
+      <svg width="20" height="14" viewBox="0 0 20 14">
+        <rect width="20" height="2" rx="1" fill="white"/>
+        <rect y="6" width="20" height="2" rx="1" fill="white"/>
+        <rect y="12" width="20" height="2" rx="1" fill="white"/>
+      </svg>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <div class="menuBen" id="menuBen">
+    <a href="#" class="active" data-trang="trangChu">Trang chủ</a>
+    <a href="#" data-trang="taoQR">Tạo Mã QR Đa Năng</a>
+    <a href="#" data-trang="rutGon">Rút Gọn Link Nhanh</a>
+    <a href="#" data-trang="chuyenDoi">Chuyển Đổi File</a>
+  </div>
+  <div class="overlayMenu" id="overlayMenu"></div>
+
+  <!-- Nội dung -->
+  <main class="layout">
+    <section class="theCardLon" id="trangChu">
+      <div class="tieuDeNoiDung">Trang chủ — Web Tools 🌌</div>
+      <div class="moTaNho">Chọn công cụ trên thanh điều hướng để xem bố cục.</div>
+      <div class="congCuNho" style="align=center"> Dùng thử các tính nang </div>
+    </section>
+
+    <section class="theCardLon" id="taoQR" style="display:none">
+      <div class="tieuDeNoiDung">Tạo Mã QR Đa Năng</div>
+      <div class="moTaNho">Bố cục mẫu: input, preview QR, tùy chọn kiểu (URL, WiFi, vCard).</div>
+      <div class="congCuNho">Khung xem trước mã QR.</div>
+    </section>
+
+    <section class="theCardLon" id="rutGon" style="display:none">
+      <div class="tieuDeNoiDung">Rút Gọn Link Nhanh</div>
+      <div class="moTaNho">Bố cục mẫu: input link, nút rút gọn, lịch sử rút gọn gần đây.</div>
+      <div class="congCuNho">Hiển thị link đã rút gọn.</div>
+    </section>
+
+    <section class="theCardLon" id="chuyenDoi" style="display:none">
+      <div class="tieuDeNoiDung">Chuyển Đổi File</div>
+      <div class="moTaNho">Bố cục: kéo-thả file, chọn định dạng, trạng thái tiến trình.</div>
+      <div class="congCuNho">Danh sách file và trạng thái chuyển đổi.</div>
+    </section>
+  </main>
+
+  <script>
+    const nutHamburger=document.getElementById('nutHamburger');
+    const menuBen=document.getElementById('menuBen');
+    const overlay=document.getElementById('overlayMenu');
+    const cacTrang=['trangChu','taoQR','rutGon','chuyenDoi'];
+
+    nutHamburger.onclick=()=>{
+      menuBen.classList.toggle('moiHienThi');
+      overlay.classList.toggle('hien');
+    };
+    overlay.onclick=()=>nutHamburger.click();
+
+    function hienTrang(id){
+      cacTrang.forEach(t=>{
+        document.getElementById(t).style.display=(t===id)?'':'none';
+      });
+      document.querySelectorAll('.menuChinh a, .menuBen a').forEach(a=>{
+        a.classList.toggle('active',a.dataset.trang===id);
+      });
+    }
+
+    document.querySelectorAll('.menuChinh a, .menuBen a').forEach(a=>{
+      a.addEventListener('click',e=>{
+        e.preventDefault();
+        hienTrang(a.dataset.trang);
+        menuBen.classList.remove('moiHienThi');
+        overlay.classList.remove('hien');
+      });
+    });
+  </script>
+</body>
+</html>
